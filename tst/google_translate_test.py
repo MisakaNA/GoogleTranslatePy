@@ -1,5 +1,5 @@
 import unittest
-from src.google_translate import translateapi
+from src.google_translate import TranslateApi
 
 
 class MyTestCase(unittest.TestCase):
@@ -7,14 +7,14 @@ class MyTestCase(unittest.TestCase):
         lang = '中文'
         txt = 'Hello'
 
-        api = translateapi(lang, txt)
+        api = TranslateApi(lang, txt)
         self.assertTrue(api.get_translate_result())
 
     def test_wrong_language(self):
         lang = 'invalid_lang'
         txt = 'Hello'
 
-        api = translateapi(lang, txt)
+        api = TranslateApi(lang, txt)
         self.assertEqual('暂不支持该语言呢。。。', api.get_translate_result())
 
 

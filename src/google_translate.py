@@ -2,7 +2,7 @@ import re
 import requests
 
 
-class translateapi:
+class TranslateApi:
 
     def __init__(self, lang, txt):
         self.lang = lang
@@ -29,11 +29,11 @@ class translateapi:
         }
 
         try:
-            langf = lang_dict[str(self.lang)]
+            lang_literal = lang_dict[str(self.lang)]
         except KeyError:
             return -1
         else:
-            return langf
+            return lang_literal
 
     def get_translate_result(self):
 
@@ -41,19 +41,28 @@ class translateapi:
             return '暂不支持该语言呢。。。'
 
         url = 'https://translate.google.com/m?hl=en&sl=auto&tl=%s&ie=UTF-8&prev=_m&q=%s' % (
-        self.get_translate_language(), str(self.txt))
+            self.get_translate_language(), str(self.txt)
+        )
         headers = {
-            'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/76.0.3809.132 Safari/537.36'}
-        req = requests.get(url=url, headers=headers, timeout=5).content.decode('utf-8')
+            'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) '
+                          'AppleWebKit/537.36 (KHTML, like Gecko) '
+                          'Chrome/76.0.3809.132 Safari/537.36'
+        }
+
+        req = requests.get(
+            url=url,
+            headers=headers,
+            timeout=5
+        ).content.decode('utf-8')
 
         try:
-            resstr = re.findall(r'"t0">(.*?)</div>', req)[0]
-            resstr = str(resstr).replace('&#39;', '\'')
+            res_str = re.findall(r'"t0">(.*?)</div>', req)[0]
+            res_str = str(res_str).replace('&#39;', '\'')
 
             if len(str(self.txt)) > 10:
-                result = '翻译结果为：\n' + resstr
+                result = '翻译结果为：\n' + res_str
             else:
-                result = '“' + str(self.txt) + '”的' + str(self.lang) + '翻译为：\n' + resstr
+                result = '“' + str(self.txt) + '”的' + str(self.lang) + '翻译为：\n' + res_str
 
         except IndexError:
             result = '啊哦，翻译姬出错惹~试试别的输入吧'
